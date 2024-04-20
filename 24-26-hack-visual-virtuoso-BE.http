@@ -1,0 +1,6 @@
+@_24_26_hack_visual_virtuoso_BE_HostAddress = http://localhost:5210
+
+GET {{_24_26_hack_visual_virtuoso_BE_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
