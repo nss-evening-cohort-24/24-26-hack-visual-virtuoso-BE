@@ -6,6 +6,6 @@ namespace HackVisualVirtuosoBE.Models
         public string? Name { get; set; }
         public string Bio { get; set; }
         public string? Email { get; set; }
-        public int Uid { get; set; }
+        public string Uid { get; set; }
     }
 }

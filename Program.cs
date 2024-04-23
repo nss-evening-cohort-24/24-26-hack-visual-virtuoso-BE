@@ -2,6 +2,7 @@ using HackVisualVirtuosoBE.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using HHPW.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,5 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+TagsAPI.Map(app);
 
 app.Run();
