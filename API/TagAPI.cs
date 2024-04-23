@@ -1,7 +1,7 @@
 using HackVisualVirtuosoBE.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace HHPW.API
+namespace HackVisualVirtuosoBE.API
 {
     public static class TagsAPI
     {
