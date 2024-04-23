@@ -2,6 +2,7 @@ using HackVisualVirtuosoBE.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using HackVisualVirtuosoBE.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,5 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-
+UserAPI.Map(app);
 app.Run();
