@@ -47,4 +47,5 @@ if (app.Environment.IsDevelopment())
 }
 TagsAPI.Map(app);
 UserAPI.Map(app);
+ArtworkTagAPI.Map(app);
 app.Run();

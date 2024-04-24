@@ -4,6 +4,6 @@ namespace HackVisualVirtuosoBE.Models
     {
         public int Id { get; set; }
         public Artwork? Artwork { get; set; }
-        public Tag? tag { get; set; }
+        public Tag? Tag { get; set; }
     }
 }
