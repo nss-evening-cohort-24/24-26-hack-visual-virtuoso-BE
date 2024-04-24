@@ -6,7 +6,7 @@ namespace HackVisualVirtuosoBE.API
     {
         public static void Map(WebApplication app)
         {
-            app.MapGet("/checkuser/{uid}", (HackVisualVirtuosoBEDbContext db, int uid) =>
+            app.MapGet("/checkuser/{uid}", (HackVisualVirtuosoBEDbContext db, string uid) =>
             {
                 var user = db.Users.Where(user => user.Uid == uid).ToList();
                 if (uid == null)
