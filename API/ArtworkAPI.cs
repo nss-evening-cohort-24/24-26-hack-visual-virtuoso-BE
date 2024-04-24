@@ -1,6 +1,6 @@
 using HackVisualVirtuosoBE.Models;
 
-namespace HHPW_BE.API
+namespace HackVisualVirtuosoBE.API
 {
     public class ArtworkApi
     {
