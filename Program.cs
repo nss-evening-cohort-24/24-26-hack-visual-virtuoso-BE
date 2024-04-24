@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
 using HackVisualVirtuosoBE.API;
-using HHPW.API;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -48,4 +47,5 @@ if (app.Environment.IsDevelopment())
 }
 TagsAPI.Map(app);
 UserAPI.Map(app);
+ArtworkTagAPI.Map(app);
 app.Run();
