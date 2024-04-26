@@ -19,7 +19,7 @@ namespace HackVisualVirtuosoBE.API
                 }
             });
 
-            app.MapPost("/user", (HackVisualVirtuosoBEDbContext db, User newUser) =>
+            app.MapPost("/createUser", (HackVisualVirtuosoBEDbContext db, User newUser) =>
             {
                 db.Users.Add(newUser);
                 db.SaveChanges();
