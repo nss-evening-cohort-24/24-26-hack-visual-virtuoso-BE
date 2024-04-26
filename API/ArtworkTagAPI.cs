@@ -8,7 +8,7 @@ namespace HackVisualVirtuosoBE.API
     {
         public static async void Map(WebApplication app)
         {
-            app.MapPost("artwork/addTag", async (HackVisualVirtuosoBEDbContext _context, AddTagToArtworkDto addTagToArtworkDto) =>
+            app.MapPost("/artwork/addTag", async (HackVisualVirtuosoBEDbContext _context, AddTagToArtworkDto addTagToArtworkDto) =>
             {
                 Artwork artwork = await _context.Artwork.FirstOrDefaultAsync(t => t.Id == addTagToArtworkDto.ArtworkId);
 
