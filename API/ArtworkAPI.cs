@@ -2,7 +2,7 @@ using HackVisualVirtuosoBE.Models;
 
 namespace HackVisualVirtuosoBE.API
 {
-    public class ArtworkApi
+    public class ArtworkAPI
     {
         public static void Map(WebApplication app)
         {
