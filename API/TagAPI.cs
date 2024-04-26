@@ -8,12 +8,12 @@ namespace HackVisualVirtuosoBE.API
         public static void Map(WebApplication app)
         {
 
-            app.MapGet("/getAllTags", (HackVisualVirtuosoBEDbContext db) =>
+            app.MapGet("/tags", (HackVisualVirtuosoBEDbContext db) =>
             {
                 return db.Tags.ToList();
             });
 
-            app.MapDelete("/deleteTags", (HackVisualVirtuosoBEDbContext db, int id) =>
+            app.MapDelete("/tags", (HackVisualVirtuosoBEDbContext db, int id) =>
             {
                 var tagToDelete = db.Tags.FirstOrDefault(i => i.Id == id);
                 if (tagToDelete == null)
@@ -29,7 +29,7 @@ namespace HackVisualVirtuosoBE.API
                 return Results.Ok();
             });
 
-            app.MapPost("/createTag", (HackVisualVirtuosoBEDbContext db, Tag createTag) =>
+            app.MapPost("/tags", (HackVisualVirtuosoBEDbContext db, Tag createTag) =>
             {
                 db.Tags.Add(createTag);
                 db.SaveChanges();
