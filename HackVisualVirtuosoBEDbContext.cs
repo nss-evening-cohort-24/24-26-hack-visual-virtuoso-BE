@@ -22,9 +22,5 @@ public class HackVisualVirtuosoBEDbContext : DbContext
             new Artwork { Id = 2, Title = "Mona Lisa", ImageUrl = "https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcQsu7yYuRPXNK9eHHSFD2tUYO4stQDb1Ez8vjqGERfs9xqYLLnY_y6lQkPFZa-44cqn", Description = "", UserId = "2"},
             new Artwork { Id = 3, Title = "The Starry Night", ImageUrl = "https://lh3.googleusercontent.com/Pd2nCUHUz4Ruc76LRh1-H0Dldl04hWSXw8P9uCYZ4TIWP7yNPArIgWlHZrf1qT9T=s1200", Description = "", UserId = "3"}
         });
-        modelBuilder.Entity<User>().HasData(new User[]
-        {
-            new User { Id = 2, Name = "Ross", Bio = "E26 Student", Email = "", Uid = "kWu72mgiX8T6bZJQkaL0aXdpJMz1" }
-        });
     }
 }
