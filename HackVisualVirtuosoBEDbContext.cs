@@ -20,5 +20,9 @@ public class HackVisualVirtuosoBEDbContext : DbContext
         {
             new Artwork { Id = 1, Title = "The Scream", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg/800px-Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg", UserId = "1"}
         });
+        modelBuilder.Entity<User>().HasData(new User[]
+        {
+            new User { Id = 2, Name = "Ross", Bio = "E26 Student", Email = "", Uid = "kWu72mgiX8T6bZJQkaL0aXdpJMz1" }
+        });
     }
 }
