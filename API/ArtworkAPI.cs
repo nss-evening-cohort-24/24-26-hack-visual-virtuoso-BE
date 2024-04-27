@@ -29,7 +29,7 @@ namespace HackVisualVirtuosoBE.API
             // Create an Artwork
             app.MapPost("/artwork", (HackVisualVirtuosoBEDbContext db, CreateArtworkDTO artworkDTO) => //createNewArtwork
             {
-                var createArtwork = new Artwork
+                var newArtwork = new Artwork
                 {
                     Title = artworkDTO.Title,
                     ImageUrl = artworkDTO.ImageUrl,
@@ -42,16 +42,16 @@ namespace HackVisualVirtuosoBE.API
                     var tag = db.Tags.Find(tagId);
                     if (tag == null)
                     {
-                        createArtwork.Tags.Add(new ArtworkTag { Tag = tag, Artwork = createArtwork });
+                        newArtwork.Tags.Add(new ArtworkTag { Tag = tag, Artwork = newArtwork });
                     }
                 }
 
-                db.Artwork.Add(createArtwork);
+                db.Artwork.Add(newArtwork);
                 db.SaveChanges();
 
-                var artworkId = createArtwork.Id;
+                var artworkId = newArtwork.Id;
 
-                return Results.Created($"/artwork/{createArtwork.Id}", createArtwork);
+                return Results.Created($"/artwork/{newArtwork.Id}", newArtwork);
             });
 
             // Update an Artwork
