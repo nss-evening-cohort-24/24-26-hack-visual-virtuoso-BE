@@ -53,7 +53,7 @@ namespace HackVisualVirtuosoBE.API
 
 
             // Delete an Artwork
-            app.MapDelete("/artwork", (HackVisualVirtuosoBEDbContext db, int id) =>
+            app.MapDelete("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id) =>
             {
                 var artworkToDelete = db.Artwork.FirstOrDefault(artwork => artwork.Id == id);
                 if (artworkToDelete == null)
@@ -66,7 +66,7 @@ namespace HackVisualVirtuosoBE.API
 
                     db.SaveChanges();
                 }
-                return Results.Ok();
+                return Results.Ok($"The Artwork {id} has been deleted.");
             });
 
         }
