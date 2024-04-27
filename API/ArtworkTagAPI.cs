@@ -26,7 +26,7 @@ namespace HackVisualVirtuosoBE.API
                 return Results.Ok();
             });
 
-            app.MapPost("/artwork/removetag", async (HackVisualVirtuosoBEDbContext _context, AddTagToArtworkDto addTagToArtworkDto) =>
+            app.MapDelete("/artwork/removetag", async (HackVisualVirtuosoBEDbContext _context, AddTagToArtworkDto addTagToArtworkDto) =>
             {
                 Artwork artwork = await _context.Artwork.FirstOrDefaultAsync(t => t.Id == addTagToArtworkDto.ArtworkId);
                 Tag tag = await _context.Tags.FirstOrDefaultAsync(t => t.Id == addTagToArtworkDto.TagId);
