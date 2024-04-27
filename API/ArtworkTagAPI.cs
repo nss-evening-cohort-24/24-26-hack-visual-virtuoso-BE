@@ -8,35 +8,60 @@ namespace HackVisualVirtuosoBE.API
     {
         public static async void Map(WebApplication app)
         {
-            app.MapPost("/artwork/addTag", async (HackVisualVirtuosoBEDbContext _context, AddTagToArtworkDto addTagToArtworkDto) =>
+            app.MapPost("/artwork/{artworkId}/tags/{tagsId}", async (HackVisualVirtuosoBEDbContext db, int artworkId, int tagId) =>
             {
-                Artwork artwork = await _context.Artwork.FirstOrDefaultAsync(t => t.Id == addTagToArtworkDto.ArtworkId);
-
-                Tag tag = await _context.Tags.FirstOrDefaultAsync(t => t.Id == addTagToArtworkDto.TagId);
-                ArtworkTag artworkTag = new()
+                // Check if the Artwork is in the Database
+                var artwork = db.Artwork.FirstOrDefault(a => a.Id == artworkId);
+                if (artwork == null)
                 {
-                    Tag = tag,
-                    Artwork = artwork,
+                    return Results.NotFound("The Artwork was not found.");
+                }
+
+                // Check to see if the Tag exists
+                var tag = db.Tags.FirstOrDefault(t => t.Id == tagId);
+                if (tag == null)
+                {
+                    return Results.NotFound("The Tag was not found");
+                }
+
+                // Create a New ArtworkTag e add to Artwork
+                var artworkTag = new ArtworkTag
+                {
+                    ArtworkId = artworkId,
+                    TagId = tagId
                 };
+                db.ArtworkTags.Add(artworkTag);
+                db.SaveChanges();
 
-                artwork.Tags.Add(artworkTag);
+                var tagName = tag.Name;
 
-                await _context.SaveChangesAsync();
-
-                return Results.Ok();
+                return Results.Ok($"{tagName} has been added to the Artwork {artworkId}.");
             });
 
-            app.MapDelete("/artwork/removetag", async (HackVisualVirtuosoBEDbContext _context, AddTagToArtworkDto addTagToArtworkDto) =>
+            app.MapDelete("/artwork/{artworkId}/tags/{artworkTagId}", async (HackVisualVirtuosoBEDbContext db, int artworkId, int artworkTagId) =>
             {
-                Artwork artwork = await _context.Artwork.FirstOrDefaultAsync(t => t.Id == addTagToArtworkDto.ArtworkId);
-                Tag tag = await _context.Tags.FirstOrDefaultAsync(t => t.Id == addTagToArtworkDto.TagId);
-                ArtworkTag artworkTag = await _context.ArtworkTags.FirstOrDefaultAsync(t => t.Tag.Id == tag.Id && t.Artwork.Id == artwork.Id);
+                var artworkTag = await db.ArtworkTags
+                .Include(at => at.Tag)
+                .Where(at => at.ArtworkId == artworkId && at.Id == artworkTagId)
+                .FirstOrDefaultAsync();
 
-                artwork.Tags.Remove(artworkTag);
+                if (artworkTag == null)
+                {
+                    return Results.NotFound("This Tag was not found in this Artwork");
+                }
 
-                await _context.SaveChangesAsync();
+                // Now Fetch the Specific Artwork
+                var artwork = await db.Artwork.FindAsync(artworkId);
+                if (artwork == null)
+                {
+                    return Results.NotFound("Artwork not found");
+                }
 
-                return Results.Ok();
+                // Remove the ArtworkTag from the Database
+                db.ArtworkTags.Remove(artworkTag);
+                await db.SaveChangesAsync();
+
+                return Results.Ok(new { Message = $"{artworkTag.Tag.Name} has been removed from the Artwork {artworkId}." });
             });
         }
     }

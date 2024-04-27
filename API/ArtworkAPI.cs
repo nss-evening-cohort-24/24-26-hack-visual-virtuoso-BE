@@ -1,3 +1,4 @@
+using HackVisualVirtuosoBE.Dtos;
 using HackVisualVirtuosoBE.Models;
 
 namespace HackVisualVirtuosoBE.API
@@ -34,7 +35,7 @@ namespace HackVisualVirtuosoBE.API
             });
 
             // Update an Artwork
-            app.MapPut("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id, Artwork updatedArtwork) => //updateArtwork
+            app.MapPut("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id, UpdateArtworkDTO updateArtworkDTO) => //updateArtwork
             {
                 var artworkToUpdate = db.Artwork.SingleOrDefault(a => a.Id == id);
 
@@ -43,8 +44,9 @@ namespace HackVisualVirtuosoBE.API
                     return Results.NotFound("Artwork not found");
                 }
 
-                artworkToUpdate.Title = updatedArtwork.Title;
-                artworkToUpdate.ImageUrl = updatedArtwork.ImageUrl;
+                artworkToUpdate.Title = updateArtworkDTO.Title;
+                artworkToUpdate.ImageUrl = updateArtworkDTO.ImageUrl;
+                artworkToUpdate.Description = updateArtworkDTO.Description;
                 db.SaveChanges();
                 return Results.Ok("The Artwork was updated!");
 
