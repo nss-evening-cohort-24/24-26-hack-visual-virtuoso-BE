@@ -13,6 +13,18 @@ namespace HackVisualVirtuosoBE.API
                 return db.Tags.ToList();
             });
 
+            app.MapGet("/tags/{id}", (HackVisualVirtuosoBEDbContext db, int id) =>
+            {
+                var itemId = db.Tags.FirstOrDefault(c => c.Id == id);
+
+                if (itemId == null)
+                {
+                    return Results.NotFound("No Tags Found.");
+                }
+
+                return Results.Ok(itemId);
+            });
+
             app.MapDelete("/tags", (HackVisualVirtuosoBEDbContext db, int id) =>
             {
                 var tagToDelete = db.Tags.FirstOrDefault(i => i.Id == id);
