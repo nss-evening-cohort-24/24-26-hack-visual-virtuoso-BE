@@ -1,5 +1,6 @@
 using HackVisualVirtuosoBE.Dtos;
 using HackVisualVirtuosoBE.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace HackVisualVirtuosoBE.API
 {
@@ -16,14 +17,18 @@ namespace HackVisualVirtuosoBE.API
             // Get Single Artwork
             app.MapGet("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id) =>
             {
-                var itemId = db.Artwork.FirstOrDefault(c => c.Id == id);
+                var artworkId = db.Artwork
+                .Include(a => a.Tags)
+                .ThenInclude(t => t.Tag)
+                .FirstOrDefault(a => a.Id == id);
+               
 
-                if (itemId == null)
+                if (artworkId == null)
                 {
                     return Results.NotFound("No Artwork Found.");
                 }
 
-                return Results.Ok(itemId);
+                return Results.Ok(artworkId);
             });
 
             // Create an Artwork

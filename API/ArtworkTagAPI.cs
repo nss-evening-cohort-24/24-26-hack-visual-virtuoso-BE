@@ -24,18 +24,27 @@ namespace HackVisualVirtuosoBE.API
                     return Results.NotFound("The Tag was not found");
                 }
 
-                // Create a New ArtworkTag e add to Artwork
-                var artworkTag = new ArtworkTag
+                // Check if the tag is already attached
+                var existingArtworkTag = db.ArtworkTags.Where(at => (at.ArtworkId == artworkId) && (at.TagId == tagId)).FirstOrDefault();
+                if (existingArtworkTag == null)
                 {
-                    ArtworkId = artworkId,
-                    TagId = tagId
-                };
-                db.ArtworkTags.Add(artworkTag);
-                db.SaveChanges();
+                    var artworkTag = new ArtworkTag
+                    {
+                        ArtworkId = artworkId,
+                        TagId = tagId
+                    };
+                    db.ArtworkTags.Add(artworkTag);
+                    db.SaveChanges();
 
-                var tagName = tag.Name;
+                    var tagName = tag.Name;
 
-                return Results.Ok($"{tagName} has been added to the Artwork {artworkId}.");
+                    return Results.Ok($"{tagName} has been added to the Artwork {artworkId}.");
+                }
+                else
+                {
+                    return Results.NotFound("The Tag was already existing");
+                }
+
             });
 
             app.MapDelete("/artwork/{artworkId}/tags/{artworkTagId}", async (HackVisualVirtuosoBEDbContext db, int artworkId, int artworkTagId) =>
