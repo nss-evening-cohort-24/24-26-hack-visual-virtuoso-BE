@@ -1,3 +1,5 @@
+using System.Security.Cryptography.X509Certificates;
+
 namespace HackVisualVirtuosoBE.Models
 {
     public class Artwork
@@ -8,7 +10,8 @@ namespace HackVisualVirtuosoBE.Models
         public string? Description { get; set; }
 
         public string? UserId { get; set; }
+        public virtual ICollection<ArtworkTag>? Tags { get; set; }
 
-        public List<ArtworkTag> Tags { get; set; } = new List<ArtworkTag>();
+       // public List<ArtworkTag> Tags { get; set; }
     }
 }
