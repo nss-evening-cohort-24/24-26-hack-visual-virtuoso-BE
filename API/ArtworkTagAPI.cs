@@ -6,8 +6,43 @@ namespace HackVisualVirtuosoBE.API
 {
     public class ArtworkTagAPI
     {
-        public static async void Map(WebApplication app)
+      
+public static async void Map(WebApplication app)
         {
+            // Get Single ArtworkTag
+            app.MapGet("/artworkTag/{id}", async (HackVisualVirtuosoBEDbContext db, int id) =>
+
+            {
+                var artworkTag = await db.ArtworkTags
+                    .Include(at => at.Artwork)
+                    .Include(at => at.Tag)
+                    .FirstOrDefaultAsync(at => at.Id == id);
+
+                if (artworkTag == null)
+                {
+                    return Results.NotFound("No Artwork Tag relationship found.");
+                }
+
+                var artworkTagDto = new ArtworkTagDto
+                {
+                    Id = artworkTag.Id,
+                    ArtworkId = artworkTag.ArtworkId,
+                    TagId = artworkTag.TagId,
+                    Artwork = new ArtworkDto
+                    {
+                        Id = artworkTag.Artwork.Id,
+                        // Map other properties as needed
+                    },
+                    Tag = new TagDto
+                    {
+                        Id = artworkTag.Tag.Id,
+                        // Map other properties as needed
+                    }
+                };
+
+                return Results.Ok(artworkTagDto);
+            });
+
             app.MapPost("/artwork/{artworkId}/tags/{tagsId}", async (HackVisualVirtuosoBEDbContext db, int artworkId, int tagId) =>
             {
                 // Check if the Artwork is in the Database

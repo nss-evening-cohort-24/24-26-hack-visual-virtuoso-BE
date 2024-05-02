@@ -1,6 +1,6 @@
 namespace HackVisualVirtuosoBE.Dtos
 {
-    public class ArtworkDto
+    public class TagDto
     {
         public int Id { get; set; }
     }
