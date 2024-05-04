@@ -45,12 +45,11 @@ namespace HackVisualVirtuosoBE.API
                 foreach (var tagId in artworkDTO.TagIds)
                 {
                     var tag = db.Tags.Find(tagId);
-                    if (tag == null)
+                    if (tag != null)
                     {
                         newArtwork.Tags.Add(new ArtworkTag { Tag = tag, Artwork = newArtwork });
                     }
                 }
-
                 db.Artwork.Add(newArtwork);
                 db.SaveChanges();
 
