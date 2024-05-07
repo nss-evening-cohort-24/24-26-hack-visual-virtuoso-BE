@@ -11,6 +11,9 @@ namespace HackVisualVirtuosoBE.API
             // Get All Artwork
             app.MapGet("/artwork", (HackVisualVirtuosoBEDbContext db) =>
             {
+                var artworkWithTag = db.Artwork
+               .Include(a => a.Tags)
+               .ThenInclude(t => t.Tag.Id);
                 return db.Artwork.ToList();
             });
 

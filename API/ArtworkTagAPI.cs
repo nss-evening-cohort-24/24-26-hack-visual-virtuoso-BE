@@ -10,37 +10,17 @@ namespace HackVisualVirtuosoBE.API
 public static async void Map(WebApplication app)
         {
             // Get Single ArtworkTag
-            app.MapGet("/artworkTag/{id}", async (HackVisualVirtuosoBEDbContext db, int id) =>
-
+            app.MapGet("/artworkTag/by-artworkId", (HackVisualVirtuosoBEDbContext db, int artworkId) =>
             {
-                var artworkTag = await db.ArtworkTags
-                    .Include(at => at.Artwork)
-                    .Include(at => at.Tag)
-                    .FirstOrDefaultAsync(at => at.Id == id);
+                var artworkTagsFilteredByArtworkId = db.ArtworkTags.Where(p => p.ArtworkId == artworkId).ToList();
 
-                if (artworkTag == null)
+                //If a Product doesn't match
+                if (!artworkTagsFilteredByArtworkId.Any())
                 {
-                    return Results.NotFound("No Artwork Tag relationship found.");
+                    return Results.NotFound("Unfortunately there are no Products available for this Category.");
                 }
 
-                var artworkTagDto = new ArtworkTagDto
-                {
-                    Id = artworkTag.Id,
-                    ArtworkId = artworkTag.ArtworkId,
-                    TagId = artworkTag.TagId,
-                    Artwork = new ArtworkDto
-                    {
-                        Id = artworkTag.Artwork.Id,
-                        // Map other properties as needed
-                    },
-                    Tag = new TagDto
-                    {
-                        Id = artworkTag.Tag.Id,
-                        // Map other properties as needed
-                    }
-                };
-
-                return Results.Ok(artworkTagDto);
+                return Results.Ok(artworkTagsFilteredByArtworkId);
             });
 
             app.MapPost("/artwork/{artworkId}/tags/{tagsId}", async (HackVisualVirtuosoBEDbContext db, int artworkId, int tagId) =>
