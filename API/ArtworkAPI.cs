@@ -83,7 +83,11 @@ namespace HackVisualVirtuosoBE.API
                 {
                     return Results.BadRequest("Search query cannot be empty.");
                 }
-                var artworks = db.Artwork.Where(p => p.Title.Contains(query)).Include(a => a.Tags).ThenInclude(t => t.Tag).ToList();
+                string lowercaseQuery = query.ToLower();
+                var artworks = db.Artwork.Where(p => p.Title.ToLower().Contains(lowercaseQuery))
+                                          .Include(a => a.Tags)
+                                          .ThenInclude(t => t.Tag)
+                                          .ToList();
                 var responseData = new
                 {
                     artworks,
