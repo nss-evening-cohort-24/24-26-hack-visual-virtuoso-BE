@@ -8,13 +8,10 @@ namespace HackVisualVirtuosoBE.API
     {
         public static void Map(WebApplication app)
         {
-            // Get All Artwork
+            // Get All Artwork + tags
             app.MapGet("/artwork", (HackVisualVirtuosoBEDbContext db) =>
-            {
-                var artworkWithTag = db.Artwork
-               .Include(a => a.Tags)
-               .ThenInclude(t => t.Tag.Id);
-                return db.Artwork.ToList();
+            { 
+                return db.Artwork.Include(a => a.Tags).ThenInclude(t => t.Tag).ToList();
             });
 
             // Get Single Artwork
