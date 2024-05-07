@@ -76,7 +76,27 @@ namespace HackVisualVirtuosoBE.API
 
             });
 
-
+            // search for products or sellers (case sensitive)
+            app.MapGet("/api/search", (HackVisualVirtuosoBEDbContext db, string query) =>
+            {
+                if (string.IsNullOrWhiteSpace(query))
+                {
+                    return Results.BadRequest("Search query cannot be empty.");
+                }
+                var artworks = db.Artwork.Where(p => p.Title.Contains(query)).Include(a => a.Tags).ThenInclude(t => t.Tag).ToList();
+                var responseData = new
+                {
+                    artworks,
+                };
+                if (artworks.Count == 0)
+                {
+                    return Results.NotFound("No results found.");
+                }
+                else
+                {
+                    return Results.Ok(responseData);
+                }
+            });
 
             // Delete an Artwork
             app.MapDelete("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id) =>
