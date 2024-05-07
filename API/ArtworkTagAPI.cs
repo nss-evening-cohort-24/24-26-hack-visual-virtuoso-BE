@@ -17,7 +17,7 @@ public static async void Map(WebApplication app)
                 //If a Product doesn't match
                 if (!artworkTagsFilteredByArtworkId.Any())
                 {
-                    return Results.NotFound("Unfortunately there are no Products available for this Category.");
+                    return Results.NotFound("Unfortunately there are no Products available for this ArtworkId.");
                 }
 
                 return Results.Ok(artworkTagsFilteredByArtworkId);
