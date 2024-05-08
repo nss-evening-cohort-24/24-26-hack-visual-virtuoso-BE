@@ -71,6 +71,18 @@ namespace HackVisualVirtuosoBE.API
                 artworkToUpdate.Title = updateArtworkDTO.Title;
                 artworkToUpdate.ImageUrl = updateArtworkDTO.ImageUrl;
                 artworkToUpdate.Description = updateArtworkDTO.Description;
+                artworkToUpdate.Tags = new List<ArtworkTag>();
+
+                foreach (var tagId in updateArtworkDTO.TagIds)
+                {
+                    var tag = db.Tags.Find(tagId);
+                    if (tag != null)
+                    {
+                        artworkToUpdate.Tags.Add(new ArtworkTag {Tag = tag});
+                    }
+                }
+            
+
                 db.SaveChanges();
                 return Results.Ok("The Artwork was updated!");
 
