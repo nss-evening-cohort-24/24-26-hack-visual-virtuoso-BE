@@ -59,7 +59,7 @@ namespace HackVisualVirtuosoBE.API
             });
 
             // Update an Artwork
-            app.MapPut("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id, UpdateArtworkDTO updateArtworkDTO) => //updateArtwork
+            app.MapPatch("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id, UpdateArtworkDTO updateArtworkDTO) => //updateArtwork
             {
                 // Check if the updateArtworkDTO is null
                 if (updateArtworkDTO == null)
