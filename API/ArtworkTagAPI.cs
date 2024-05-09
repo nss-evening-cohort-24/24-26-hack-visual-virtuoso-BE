@@ -10,7 +10,7 @@ namespace HackVisualVirtuosoBE.API
 public static async void Map(WebApplication app)
         {
             // Get Single ArtworkTag
-            app.MapGet("/artworkTag/by-artworkId", (HackVisualVirtuosoBEDbContext db, int artworkId) =>
+            app.MapGet("/artworkTag/by-artworkId/{artworkId}", (HackVisualVirtuosoBEDbContext db, int artworkId) =>
             {
                 var artworkTagsFilteredByArtworkId = db.ArtworkTags.Where(p => p.ArtworkId == artworkId).ToList();
 
