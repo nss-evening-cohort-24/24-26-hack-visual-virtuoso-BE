@@ -61,6 +61,13 @@ namespace HackVisualVirtuosoBE.API
             // Update an Artwork
             app.MapPut("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id, UpdateArtworkDTO updateArtworkDTO) => //updateArtwork
             {
+                // Check if the updateArtworkDTO is null
+                if (updateArtworkDTO == null)
+                {
+                    return Results.BadRequest("Invalid JSON data. Please provide valid data.");
+                }
+
+                // Retrieve the artwork to update from the database
                 var artworkToUpdate = db.Artwork.SingleOrDefault(a => a.Id == id);
 
                 if (artworkToUpdate == null)
@@ -68,9 +75,12 @@ namespace HackVisualVirtuosoBE.API
                     return Results.NotFound("Artwork not found");
                 }
 
+                // Update artwork properties
                 artworkToUpdate.Title = updateArtworkDTO.Title;
-                artworkToUpdate.ImageUrl = updateArtworkDTO.ImageUrl;
                 artworkToUpdate.Description = updateArtworkDTO.Description;
+                artworkToUpdate.ImageUrl = updateArtworkDTO.ImageUrl;
+
+                // Update tags
                 artworkToUpdate.Tags = new List<ArtworkTag>();
 
                 foreach (var tagId in updateArtworkDTO.TagIds)
@@ -78,40 +88,14 @@ namespace HackVisualVirtuosoBE.API
                     var tag = db.Tags.Find(tagId);
                     if (tag != null)
                     {
-                        artworkToUpdate.Tags.Add(new ArtworkTag {Tag = tag});
+                        artworkToUpdate.Tags.Add(new ArtworkTag { Tag = tag });
                     }
                 }
-            
 
+                // Save changes to the database
                 db.SaveChanges();
+
                 return Results.Ok("The Artwork was updated!");
-
-            });
-
-            // search for products or sellers (case sensitive)
-            app.MapGet("/api/search", (HackVisualVirtuosoBEDbContext db, string query) =>
-            {
-                if (string.IsNullOrWhiteSpace(query))
-                {
-                    return Results.BadRequest("Search query cannot be empty.");
-                }
-                string lowercaseQuery = query.ToLower();
-                var artworks = db.Artwork.Where(p => p.Title.ToLower().Contains(lowercaseQuery))
-                                          .Include(a => a.Tags)
-                                          .ThenInclude(t => t.Tag)
-                                          .ToList();
-                var responseData = new
-                {
-                    artworks,
-                };
-                if (artworks.Count == 0)
-                {
-                    return Results.NotFound("No results found.");
-                }
-                else
-                {
-                    return Results.Ok(responseData);
-                }
             });
 
             // Delete an Artwork
