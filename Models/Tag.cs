@@ -5,6 +5,6 @@ namespace HackVisualVirtuosoBE.Models
         public int Id { get; set; }
         public string? Name { get; set; }
 
-        // public List<ArtworkTag> Artwork { get; set; } = new List<ArtworkTag>();
+        public virtual ICollection<ArtworkTag> ArtworkTags { get; set; }
     }
 }

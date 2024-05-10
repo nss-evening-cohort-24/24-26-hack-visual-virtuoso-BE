@@ -18,15 +18,27 @@ public class HackVisualVirtuosoBEDbContext : DbContext
     {
         modelBuilder.Entity<Artwork>().HasData(new Artwork[]
         {
-            new Artwork { Id = 1, Title = "The Scream", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg/800px-Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg", Description = "", UserId = "1", Tags = []},
+            new Artwork { Id = 1, Title = "The Scream", ImageUrl = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg/800px-Edvard_Munch%2C_1893%2C_The_Scream%2C_oil%2C_tempera_and_pastel_on_cardboard%2C_91_x_73_cm%2C_National_Gallery_of_Norway.jpg", Description = "", UserId = "1", ArtworkTags = []},
             new Artwork { Id = 2, Title = "Mona Lisa", ImageUrl = "https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcQsu7yYuRPXNK9eHHSFD2tUYO4stQDb1Ez8vjqGERfs9xqYLLnY_y6lQkPFZa-44cqn", Description = "", UserId = "2"},
             new Artwork { Id = 3, Title = "The Starry Night", ImageUrl = "https://lh3.googleusercontent.com/Pd2nCUHUz4Ruc76LRh1-H0Dldl04hWSXw8P9uCYZ4TIWP7yNPArIgWlHZrf1qT9T=s1200", Description = "", UserId = "3"}
         });
 
-        modelBuilder.Entity<ArtworkTag>().HasData(new ArtworkTag[]
-        {
-            new ArtworkTag { Id = 1, ArtworkId = 1, TagId = 1 },
-        });
+        modelBuilder.Entity<ArtworkTag>()
+               .HasKey(at => new { at.ArtworkId, at.TagId });
+
+        modelBuilder.Entity<ArtworkTag>()
+            .HasOne(at => at.Artwork)
+            .WithMany(a => a.ArtworkTags)
+            .HasForeignKey(at => at.ArtworkId);
+
+        modelBuilder.Entity<ArtworkTag>()
+            .HasOne(at => at.Tag)
+            .WithMany(t => t.ArtworkTags)
+            .HasForeignKey(at => at.TagId);
+
+        modelBuilder.Entity<ArtworkTag>()
+            .HasIndex(at => new { at.ArtworkId, at.TagId })
+            .IsUnique();
 
         modelBuilder.Entity<Tag>().HasData(new Tag[]
         {

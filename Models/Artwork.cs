@@ -10,8 +10,7 @@ namespace HackVisualVirtuosoBE.Models
         public string? Description { get; set; }
 
         public string? UserId { get; set; }
-        public virtual ICollection<ArtworkTag>? Tags { get; set; }
-
-       // public List<ArtworkTag> Tags { get; set; }
+        public virtual ICollection<ArtworkTag> ArtworkTags { get; set; }
+        // public List<ArtworkTag> Tags { get; set; }
     }
 }
