@@ -61,6 +61,13 @@ namespace HackVisualVirtuosoBE.API
             // Update an Artwork
             app.MapPut("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id, UpdateArtworkDTO updateArtworkDTO) => //updateArtwork
             {
+                // Check if the updateArtworkDTO is null
+                if (updateArtworkDTO == null)
+                {
+                    return Results.BadRequest("Invalid JSON data. Please provide valid data.");
+                }
+
+                // Retrieve the artwork to update from the database
                 var artworkToUpdate = db.Artwork.SingleOrDefault(a => a.Id == id);
 
                 if (artworkToUpdate == null)
@@ -68,9 +75,12 @@ namespace HackVisualVirtuosoBE.API
                     return Results.NotFound("Artwork not found");
                 }
 
+                // Update artwork properties
                 artworkToUpdate.Title = updateArtworkDTO.Title;
-                artworkToUpdate.ImageUrl = updateArtworkDTO.ImageUrl;
                 artworkToUpdate.Description = updateArtworkDTO.Description;
+                artworkToUpdate.ImageUrl = updateArtworkDTO.ImageUrl;
+
+                // Update tags
                 artworkToUpdate.Tags = new List<ArtworkTag>();
 
                 foreach (var tagId in updateArtworkDTO.TagIds)
@@ -78,20 +88,18 @@ namespace HackVisualVirtuosoBE.API
                     var tag = db.Tags.Find(tagId);
                     if (tag != null)
                     {
-                        artworkToUpdate.Tags.Add(new ArtworkTag {Tag = tag});
+                        artworkToUpdate.Tags.Add(new ArtworkTag { Tag = tag });
                     }
                 }
-            
 
+                // Save changes to the database
                 db.SaveChanges();
-                return Results.Ok("The Artwork was updated!");
 
+                return Results.Ok("The Artwork was updated!");
             });
 
-
-
-            // Delete an Artwork
-            app.MapDelete("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id) =>
+    // Delete an Artwork
+    app.MapDelete("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id) =>
             {
                 var artworkToDelete = db.Artwork.FirstOrDefault(artwork => artwork.Id == id);
                 if (artworkToDelete == null)
