@@ -11,14 +11,14 @@ namespace HackVisualVirtuosoBE.API
             // Get All Artwork + tags
             app.MapGet("/artwork", (HackVisualVirtuosoBEDbContext db) =>
             { 
-                return db.Artwork.Include(a => a.Tags).ThenInclude(t => t.Tag).ToList();
+                return db.Artwork.Include(a => a.ArtworkTags).ThenInclude(t => t.Tag).ToList();
             });
 
             // Get Single Artwork
             app.MapGet("/artwork/{id}", (HackVisualVirtuosoBEDbContext db, int id) =>
             {
                 var artworkId = db.Artwork
-                .Include(a => a.Tags)
+                .Include(a => a.ArtworkTags)
                 .ThenInclude(t => t.Tag)
                 .FirstOrDefault(a => a.Id == id);
                
@@ -39,7 +39,7 @@ namespace HackVisualVirtuosoBE.API
                     Title = artworkDTO.Title,
                     ImageUrl = artworkDTO.ImageUrl,
                     Description = artworkDTO.Description,
-                    Tags = new List<ArtworkTag>(),
+                    ArtworkTags = new List<ArtworkTag>(),
                 };
 
                 foreach (var tagId in artworkDTO.TagIds)
@@ -47,7 +47,7 @@ namespace HackVisualVirtuosoBE.API
                     var tag = db.Tags.Find(tagId);
                     if (tag != null)
                     {
-                        newArtwork.Tags.Add(new ArtworkTag { Tag = tag, Artwork = newArtwork });
+                        newArtwork.ArtworkTags.Add(new ArtworkTag { Tag = tag, Artwork = newArtwork });
                     }
                 }
                 db.Artwork.Add(newArtwork);
@@ -81,14 +81,14 @@ namespace HackVisualVirtuosoBE.API
                 artworkToUpdate.ImageUrl = updateArtworkDTO.ImageUrl;
 
                 // Update tags
-                artworkToUpdate.Tags = new List<ArtworkTag>();
+                artworkToUpdate.ArtworkTags = new List<ArtworkTag>();
 
-                foreach (var tagId in updateArtworkDTO.TagIds)
+                foreach (var tagId in updateArtworkDTO.Tags)
                 {
                     var tag = db.Tags.Find(tagId);
                     if (tag != null)
                     {
-                        artworkToUpdate.Tags.Add(new ArtworkTag { Tag = tag });
+                        artworkToUpdate.ArtworkTags.Add(new ArtworkTag { Tag = tag });
                     }
                 }
 

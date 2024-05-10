@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace _24_26_hack_visual_virtuoso_BE.Migrations
 {
     [DbContext(typeof(HackVisualVirtuosoBEDbContext))]
-    [Migration("20240427205728_Fix2Create")]
-    partial class Fix2Create
+    [Migration("20240510034605_ModelChangeCreate")]
+    partial class ModelChangeCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -76,23 +76,21 @@ namespace _24_26_hack_visual_virtuoso_BE.Migrations
 
             modelBuilder.Entity("HackVisualVirtuosoBE.Models.ArtworkTag", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
                     b.Property<int>("ArtworkId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TagId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("ArtworkId");
+                    b.HasKey("ArtworkId", "TagId");
 
                     b.HasIndex("TagId");
+
+                    b.HasIndex("ArtworkId", "TagId")
+                        .IsUnique();
 
                     b.ToTable("ArtworkTags");
                 });
@@ -111,6 +109,43 @@ namespace _24_26_hack_visual_virtuoso_BE.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Tags");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Surrealism"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Impressionism"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Abstract"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Realism"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Cubism"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Portraiture"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Romanticism"
+                        });
                 });
 
             modelBuilder.Entity("HackVisualVirtuosoBE.Models.User", b =>
@@ -141,13 +176,13 @@ namespace _24_26_hack_visual_virtuoso_BE.Migrations
             modelBuilder.Entity("HackVisualVirtuosoBE.Models.ArtworkTag", b =>
                 {
                     b.HasOne("HackVisualVirtuosoBE.Models.Artwork", "Artwork")
-                        .WithMany("Tags")
+                        .WithMany("ArtworkTags")
                         .HasForeignKey("ArtworkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HackVisualVirtuosoBE.Models.Tag", "Tag")
-                        .WithMany("Artwork")
+                        .WithMany("ArtworkTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -159,12 +194,12 @@ namespace _24_26_hack_visual_virtuoso_BE.Migrations
 
             modelBuilder.Entity("HackVisualVirtuosoBE.Models.Artwork", b =>
                 {
-                    b.Navigation("Tags");
+                    b.Navigation("ArtworkTags");
                 });
 
             modelBuilder.Entity("HackVisualVirtuosoBE.Models.Tag", b =>
                 {
-                    b.Navigation("Artwork");
+                    b.Navigation("ArtworkTags");
                 });
 #pragma warning restore 612, 618
         }

@@ -73,33 +73,23 @@ namespace _24_26_hack_visual_virtuoso_BE.Migrations
 
             modelBuilder.Entity("HackVisualVirtuosoBE.Models.ArtworkTag", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
                     b.Property<int>("ArtworkId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TagId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.Property<int>("Id")
+                        .HasColumnType("integer");
 
-                    b.HasIndex("ArtworkId");
+                    b.HasKey("ArtworkId", "TagId");
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("ArtworkTags");
+                    b.HasIndex("ArtworkId", "TagId")
+                        .IsUnique();
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            ArtworkId = 1,
-                            TagId = 1
-                        });
+                    b.ToTable("ArtworkTags");
                 });
 
             modelBuilder.Entity("HackVisualVirtuosoBE.Models.Tag", b =>
@@ -183,13 +173,13 @@ namespace _24_26_hack_visual_virtuoso_BE.Migrations
             modelBuilder.Entity("HackVisualVirtuosoBE.Models.ArtworkTag", b =>
                 {
                     b.HasOne("HackVisualVirtuosoBE.Models.Artwork", "Artwork")
-                        .WithMany("Tags")
+                        .WithMany("ArtworkTags")
                         .HasForeignKey("ArtworkId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("HackVisualVirtuosoBE.Models.Tag", "Tag")
-                        .WithMany()
+                        .WithMany("ArtworkTags")
                         .HasForeignKey("TagId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -201,7 +191,12 @@ namespace _24_26_hack_visual_virtuoso_BE.Migrations
 
             modelBuilder.Entity("HackVisualVirtuosoBE.Models.Artwork", b =>
                 {
-                    b.Navigation("Tags");
+                    b.Navigation("ArtworkTags");
+                });
+
+            modelBuilder.Entity("HackVisualVirtuosoBE.Models.Tag", b =>
+                {
+                    b.Navigation("ArtworkTags");
                 });
 #pragma warning restore 612, 618
         }
