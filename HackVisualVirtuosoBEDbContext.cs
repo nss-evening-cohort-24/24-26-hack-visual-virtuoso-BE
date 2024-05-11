@@ -40,6 +40,8 @@ public class HackVisualVirtuosoBEDbContext : DbContext
             .HasIndex(at => new { at.ArtworkId, at.TagId })
             .IsUnique();
 
+        modelBuilder.Entity<ArtworkTag>().Property(at => at.Id).ValueGeneratedOnAdd();
+
         modelBuilder.Entity<Tag>().HasData(new Tag[]
         {
             new Tag { Id = 1, Name = "Surrealism" },

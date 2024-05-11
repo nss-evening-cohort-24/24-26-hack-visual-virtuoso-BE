@@ -82,13 +82,13 @@ namespace HackVisualVirtuosoBE.API
 
                 // Update tags
                 artworkToUpdate.ArtworkTags = new List<ArtworkTag>();
-
-                foreach (var tagId in updateArtworkDTO.Tags)
+                db.ArtworkTags.RemoveRange(db.ArtworkTags.Where(x => x.ArtworkId == artworkToUpdate.Id));
+                foreach (var tagId in updateArtworkDTO.TagIds)
                 {
                     var tag = db.Tags.Find(tagId);
                     if (tag != null)
                     {
-                        artworkToUpdate.ArtworkTags.Add(new ArtworkTag { Tag = tag });
+                        artworkToUpdate.ArtworkTags.Add(new ArtworkTag { Tag = tag, ArtworkId = artworkToUpdate.Id });
                     }
                 }
 
